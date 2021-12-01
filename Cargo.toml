@@ -2,7 +2,19 @@
 name = "gritea"
 version = "0.1.0"
 edition = "2021"
+authors = ["Ao Chen <chenao3220@gmail.com>"]
+license = "MIT"
+description = "Gitea APi client"
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
 [dependencies]
+tokio = { version = "1.12.0", features = ["full"] }
+reqwest = { version = "0.11", features = ["json"] }
+url = "2.2.2"
+thiserror = "1.0"
+chrono = "0.4"
+http = "0.2.5"
+serde = { version = "1.0", features = ["derive"] }
+serde_json = "1.0"
+async-trait = "0.1.51"
