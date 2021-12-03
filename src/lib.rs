@@ -4,6 +4,7 @@ pub mod encrypt;
 pub mod error;
 
 mod config;
+mod repo;
 mod user;
 
 pub use error::{Error, Result};

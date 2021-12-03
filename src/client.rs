@@ -1,4 +1,5 @@
-use reqwest::Client;
+use http::Method;
+use reqwest::{Client, RequestBuilder};
 use serde::de::DeserializeOwned;
 use std::sync::{Arc, RwLock};
 use url::Url;
@@ -7,6 +8,7 @@ use crate::{
     auth::{Auth, OAuth2Token},
     config::Config,
     error::{Error, Result},
+    repo::Repository,
     user::User,
 };
 
@@ -87,22 +89,39 @@ impl Gritea {
         // TODO: auto refresh
         self.r_conf()?.token.headers()
     }
+
+    pub fn request(&self, method: Method, rel_url: &str) -> Result<RequestBuilder> {
+        let url = self.abs_url(rel_url)?;
+        let auth_header = self.headers()?;
+
+        Ok(self
+            .cli
+            .request(method, url)
+            .header(auth_header.0, auth_header.1))
+    }
 }
 
 // API
 impl Gritea {
+    // ===============================================
+    // User related apis
+    // ===============================================
     pub async fn current_user(&self) -> Result<User> {
-        let url = self.abs_url("user")?;
-        let auth_header = self.headers()?;
+        let resp = self.request(Method::GET, "user")?.send().await?;
 
+        resp_json::<User>(resp, "get user failed").await
+    }
+
+    // ===============================================
+    // Repository related apis
+    // ===============================================
+    pub async fn get_repo(&self, owner: &str, repo: &str) -> Result<Repository> {
         let resp = self
-            .cli
-            .get(url)
-            .header(auth_header.0, auth_header.1)
+            .request(Method::GET, &format!("repos/{}/{}", owner, repo))?
             .send()
             .await?;
 
-        resp_json::<User>(resp, "get user failed").await
+        resp_json::<Repository>(resp, "get repo failed").await
     }
 }
 

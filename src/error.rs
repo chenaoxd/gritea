@@ -19,6 +19,12 @@ pub enum Error {
     ReqwestError(#[from] reqwest::Error),
 
     #[error("{0}")]
+    VarError(#[from] std::env::VarError),
+
+    #[error("{0}")]
+    AnyhowError(#[from] anyhow::Error),
+
+    #[error("{0}")]
     Other(String),
 }
 
