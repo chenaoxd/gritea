@@ -15,7 +15,8 @@ async fn main() -> Result<()> {
     println!("{:#?}", user);
 
     let repo = cli.get_repo("op", "jarvis").await?;
-    println!("{:#?}", repo);
+
+    println!("{}", serde_json::to_string_pretty(&repo)?);
 
     Ok(())
 }
