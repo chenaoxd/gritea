@@ -4,7 +4,12 @@ version = "0.1.0"
 edition = "2021"
 authors = ["Ao Chen <chenao3220@gmail.com>"]
 license = "MIT"
-description = "Gitea APi client"
+description = "Gitea API sdk"
+homepage = "https://github.com/chenaoxd/gritea"
+documentation = "https://doc.rs/gritea"
+readme = "README.md"
+keywords = ["gitea", "sdk", "async"]
+categories = ["api-bindings", "asynchronous"]
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
