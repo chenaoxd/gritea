@@ -4,6 +4,7 @@ pub mod client;
 pub mod config;
 pub mod encrypt;
 pub mod error;
+pub mod pagination;
 pub mod repo;
 pub mod user;
 

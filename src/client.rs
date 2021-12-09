@@ -8,6 +8,7 @@ use crate::{
     builder::GriteaBuilder,
     config::Config,
     error::{Error, Result},
+    pagination::Pagination,
     repo::Repository,
     user::User,
 };
@@ -59,15 +60,30 @@ impl Gritea {
     // ===============================================
     // User related apis
     // ===============================================
+
+    /// Get the user who owns the auth_token
     pub async fn current_user(&self) -> Result<User> {
         let resp = self.request(Method::GET, "user")?.send().await?;
 
         resp_json::<User>(resp, "get user failed").await
     }
 
+    /// List all the repos which the user has permission to
+    pub async fn list_repos(&self, page: Pagination) -> Result<Vec<Repository>> {
+        let resp = self
+            .request(Method::GET, "user/repos")?
+            .query(&page.to_query())
+            .send()
+            .await?;
+
+        resp_json::<Vec<Repository>>(resp, "list repos failed").await
+    }
+
     // ===============================================
     // Repository related apis
     // ===============================================
+
+    /// Get the specified repo
     pub async fn get_repo(&self, owner: &str, repo: &str) -> Result<Repository> {
         let resp = self
             .request(Method::GET, &format!("repos/{}/{}", owner, repo))?
