@@ -9,7 +9,7 @@ use crate::{
     config::Config,
     error::{Error, Result},
     pagination::Pagination,
-    repo::Repository,
+    repo::{CreateHookOption, Hook, Repository},
     user::User,
 };
 
@@ -69,7 +69,7 @@ impl Gritea {
     }
 
     /// List all the repos which the user has permission to
-    pub async fn list_repos(&self, page: Pagination) -> Result<Vec<Repository>> {
+    pub async fn list_repos(&self, page: &Pagination) -> Result<Vec<Repository>> {
         let resp = self
             .request(Method::GET, "user/repos")?
             .query(&page.to_query())
@@ -91,6 +91,22 @@ impl Gritea {
             .await?;
 
         resp_json::<Repository>(resp, "get repo failed").await
+    }
+
+    /// Create a webhook
+    pub async fn create_hook(
+        &self,
+        owner: &str,
+        repo: &str,
+        opt: &CreateHookOption,
+    ) -> Result<Hook> {
+        let resp = self
+            .request(Method::POST, &format!("repos/{}/{}/hooks", owner, repo))?
+            .json(opt)
+            .send()
+            .await?;
+
+        resp_json::<Hook>(resp, "create hook failed").await
     }
 }
 
