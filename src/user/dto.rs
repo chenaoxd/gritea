@@ -1,3 +1,4 @@
+use chrono::{DateTime, Utc};
 use serde::{Deserialize, Serialize};
 
 // TODO: parse datetime
@@ -5,7 +6,7 @@ use serde::{Deserialize, Serialize};
 pub struct User {
     pub active: bool,
     pub avatar_url: String,
-    pub created: String,
+    pub created: DateTime<Utc>,
     pub description: String,
     pub email: String,
     pub followers_count: i64,
@@ -14,7 +15,7 @@ pub struct User {
     pub id: i32,
     pub is_admin: bool,
     pub language: String,
-    pub last_login: String,
+    pub last_login: DateTime<Utc>,
     pub location: String,
     pub login: String,
     pub prohibit_login: bool,
