@@ -50,6 +50,12 @@ impl GriteaBuilder {
         self
     }
 
+    /// Use the specified reqwest client, avoid to establish new http connections
+    pub fn cli(&mut self, cli: Client) -> &mut Self {
+        self.cli = Some(cli);
+        self
+    }
+
     pub fn build(&self) -> Result<Gritea> {
         let base_url = Url::parse(&format!("{}://{}/api/v1/", self.scheme, self.host))?;
 
