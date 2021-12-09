@@ -9,7 +9,7 @@ use crate::{
 };
 
 pub struct GriteaBuilder {
-    scheme: &'static str,
+    scheme: String,
     host: String,
     token: Auth,
     cli: Option<Client>,
@@ -19,7 +19,7 @@ impl GriteaBuilder {
     /// Create a new Gitea API client builder.
     pub fn new(host: impl Into<String>) -> Self {
         Self {
-            scheme: "https",
+            scheme: "https".to_string(),
             host: host.into(),
             token: Auth::None,
             cli: None,
@@ -28,7 +28,13 @@ impl GriteaBuilder {
 
     /// Switch to an insecure protocol (http instead of https).
     pub fn insecure(&mut self) -> &mut Self {
-        self.scheme = "http";
+        self.scheme = "http".to_string();
+        self
+    }
+
+    /// Set the scheme of the Gitea server
+    pub fn scheme(&mut self, scheme: impl Into<String>) -> &mut Self {
+        self.scheme = scheme.into();
         self
     }
 
