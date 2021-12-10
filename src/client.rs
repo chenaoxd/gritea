@@ -65,7 +65,7 @@ impl Gritea {
     pub async fn current_user(&self) -> Result<User> {
         let resp = self.request(Method::GET, "user")?.send().await?;
 
-        resp_json::<User>(resp, "get user failed").await
+        resp_json(resp, "get user failed").await
     }
 
     /// List all the repos which the user has permission to
@@ -76,7 +76,7 @@ impl Gritea {
             .send()
             .await?;
 
-        resp_json::<Vec<Repository>>(resp, "list repos failed").await
+        resp_json(resp, "list repos failed").await
     }
 
     // ===============================================
@@ -90,7 +90,7 @@ impl Gritea {
             .send()
             .await?;
 
-        resp_json::<Repository>(resp, "get repo failed").await
+        resp_json(resp, "get repo failed").await
     }
 
     /// Create a webhook
@@ -106,7 +106,27 @@ impl Gritea {
             .send()
             .await?;
 
-        resp_json::<Hook>(resp, "create hook failed").await
+        resp_json(resp, "create hook failed").await
+    }
+
+    /// List webhooks of a repo
+    pub async fn list_hooks(
+        &self,
+        owner: &str,
+        repo: &str,
+        page: &Pagination,
+    ) -> Result<Vec<Hook>> {
+        let resp = self
+            .request(Method::GET, &format!("repos/{}/{}/hooks", owner, repo))?
+            .query(&page.to_query())
+            .send()
+            .await?;
+
+        resp_json(
+            resp,
+            &format!("list hooks of repo {}/{} failed", owner, repo),
+        )
+        .await
     }
 }
 

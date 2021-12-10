@@ -40,5 +40,10 @@ async fn main() -> Result<()> {
         .await?;
     println!("{:#?}", hook);
 
+    let hooks = cli
+        .list_hooks("op", "jarvis", &Pagination::default())
+        .await?;
+    println!("{:#?}", hooks);
+
     Ok(())
 }
