@@ -69,11 +69,11 @@ pub struct Repository {
 }
 
 /// Options when create a hook
-/// NOTE: url, content_type, secret is required in config
 #[derive(Debug, Deserialize, Serialize)]
 pub struct CreateHookOption {
     #[serde(rename = "type")]
     pub type_: String,
+    /// NOTE: url, content_type is required in config
     pub config: HashMap<String, String>,
     pub events: Vec<String>,
     pub branch_filter: String,
