@@ -1,5 +1,5 @@
 use anyhow::Context;
-use gritea::{client::Gritea, pagination::Pagination, repo::CreateHookOption, Result};
+use gritea::{client::Gritea, hook::CreateHookOption, pagination::Pagination, Result};
 use maplit::hashmap;
 use std::env;
 
