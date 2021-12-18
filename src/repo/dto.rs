@@ -1,5 +1,3 @@
-use std::collections::HashMap;
-
 use chrono::{DateTime, Utc};
 use serde::{Deserialize, Serialize};
 
@@ -66,29 +64,4 @@ pub struct Repository {
     pub avatar_url: String,
     pub internal: bool,
     pub mirror_interval: String,
-}
-
-/// Options when create a hook
-#[derive(Debug, Deserialize, Serialize)]
-pub struct CreateHookOption {
-    #[serde(rename = "type")]
-    pub type_: String,
-    /// NOTE: url, content_type is required in config
-    pub config: HashMap<String, String>,
-    pub events: Vec<String>,
-    pub branch_filter: String,
-    pub active: bool,
-}
-
-/// A hook is a web hook when one repository changed
-#[derive(Debug, Deserialize, Serialize)]
-pub struct Hook {
-    pub id: i64,
-    #[serde(rename = "type")]
-    pub type_: String,
-    pub config: HashMap<String, String>,
-    pub events: Vec<String>,
-    pub active: bool,
-    pub updated_at: DateTime<Utc>,
-    pub created_at: DateTime<Utc>,
 }

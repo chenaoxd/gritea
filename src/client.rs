@@ -8,8 +8,9 @@ use crate::{
     builder::GriteaBuilder,
     config::Config,
     error::{Error, Result},
+    hook::{CreateHookOption, Hook},
     pagination::Pagination,
-    repo::{CreateHookOption, Hook, Repository},
+    repo::Repository,
     user::User,
 };
 
