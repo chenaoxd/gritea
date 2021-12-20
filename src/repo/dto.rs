@@ -79,7 +79,7 @@ pub enum CommitStatusState {
 #[derive(Debug, Deserialize, Serialize)]
 pub struct CommitStatus {
     pub id: i64,
-    pub state: CommitStatusState,
+    pub status: CommitStatusState,
     pub target_url: String,
     pub description: String,
     pub url: String,
