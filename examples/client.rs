@@ -1,5 +1,8 @@
 use anyhow::Context;
-use gritea::{client::Gritea, hook::CreateHookOption, pagination::Pagination, Result};
+use gritea::{
+    client::Gritea, hook::CreateHookOption, pagination::Pagination,
+    repo::CreateStatusOption, Result,
+};
 use maplit::hashmap;
 use std::env;
 
@@ -15,7 +18,7 @@ async fn main() -> Result<()> {
     let user = cli.current_user().await?;
     println!("{:#?}", user);
 
-    let repo = cli.get_repo("op", "jarvis").await?;
+    let repo = cli.get_repo("chenao", "gritea").await?;
     println!("{:#?}", repo);
 
     let _repos = cli.list_repos(&Pagination::default()).await?;
@@ -23,8 +26,8 @@ async fn main() -> Result<()> {
 
     let hook = cli
         .create_hook(
-            "op",
-            "jarvis",
+            "chenao",
+            "gritea",
             &CreateHookOption {
                 type_: "gitea".to_string(),
                 config: hashmap! {
@@ -41,9 +44,25 @@ async fn main() -> Result<()> {
     println!("{:#?}", hook);
 
     let hooks = cli
-        .list_hooks("op", "jarvis", &Pagination::default())
+        .list_hooks("chenao", "gritea", &Pagination::default())
         .await?;
     println!("{:#?}", hooks);
+
+    let opt = CreateStatusOption {
+        state: gritea::repo::CommitStatusState::Success,
+        target_url: "http://trg_url".to_string(),
+        description: "test_description".to_string(),
+        context: "test_context".to_string(),
+    };
+    let status = cli
+        .create_status(
+            "chenao",
+            "gritea",
+            "c0a03f7fd44f9fe42a108a24e30984779e6c85b4",
+            &opt,
+        )
+        .await?;
+    println!("{:#?}", status);
 
     Ok(())
 }

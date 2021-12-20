@@ -10,7 +10,7 @@ use crate::{
     error::{Error, Result},
     hook::{CreateHookOption, Hook},
     pagination::Pagination,
-    repo::Repository,
+    repo::{CommitStatus, CreateStatusOption, Repository},
     user::User,
 };
 
@@ -92,6 +92,26 @@ impl Gritea {
             .await?;
 
         resp_json(resp, "get repo failed").await
+    }
+
+    /// Create a commit status
+    pub async fn create_status(
+        &self,
+        owner: &str,
+        repo: &str,
+        commit: &str,
+        option: &CreateStatusOption,
+    ) -> Result<CommitStatus> {
+        let resp = self
+            .request(
+                Method::POST,
+                &format!("repos/{}/{}/statuses/{}", owner, repo, commit),
+            )?
+            .json(option)
+            .send()
+            .await?;
+
+        resp_json(resp, "create commit status failed").await
     }
 
     /// Create a webhook

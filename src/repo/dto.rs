@@ -65,3 +65,62 @@ pub struct Repository {
     pub internal: bool,
     pub mirror_interval: String,
 }
+
+#[derive(Debug, Deserialize, Serialize)]
+#[serde(rename_all = "snake_case")]
+pub enum CommitStatusState {
+    Pending,
+    Success,
+    Error,
+    Failure,
+    Warning,
+}
+
+#[derive(Debug, Deserialize, Serialize)]
+pub struct CommitStatus {
+    pub id: i64,
+    pub state: CommitStatusState,
+    pub target_url: String,
+    pub description: String,
+    pub url: String,
+    pub context: String,
+    pub creator: User,
+    pub created_at: DateTime<Utc>,
+    pub updated_at: DateTime<Utc>,
+}
+
+#[derive(Debug, Deserialize, Serialize)]
+pub struct CreateStatusOption {
+    pub state: CommitStatusState,
+    pub target_url: String,
+    pub description: String,
+    pub context: String,
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn commit_status_state_serialize() {
+        let objs = vec![
+            CommitStatusState::Pending,
+            CommitStatusState::Success,
+            CommitStatusState::Error,
+            CommitStatusState::Failure,
+            CommitStatusState::Warning,
+        ];
+        let reprs = vec![
+            "\"pending\"",
+            "\"success\"",
+            "\"error\"",
+            "\"failure\"",
+            "\"warning\"",
+        ];
+
+        for (obj, repr) in objs.iter().zip(reprs.iter()) {
+            let res_repr = serde_json::to_string(obj).unwrap();
+            assert_eq!(&res_repr, repr);
+        }
+    }
+}
