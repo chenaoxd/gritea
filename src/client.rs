@@ -130,6 +130,19 @@ impl Gritea {
         resp_json(resp, "create hook failed").await
     }
 
+    /// Delete a webhook
+    pub async fn delete_hook(&self, owner: &str, repo: &str, id: i64) -> Result<()> {
+        let resp = self
+            .request(
+                Method::DELETE,
+                &format!("repos/{}/{}/hooks/{}", owner, &repo, id),
+            )?
+            .send()
+            .await?;
+
+        check_success(resp, "delete hook failed").await
+    }
+
     /// List webhooks of a repo
     pub async fn list_hooks(
         &self,
@@ -164,5 +177,18 @@ where
         )))
     } else {
         Ok(resp.json::<T>().await?)
+    }
+}
+
+pub async fn check_success(resp: reqwest::Response, err_mes: &str) -> Result<()> {
+    if !resp.status().is_success() {
+        Err(Error::GiteaError(format!(
+            "{}: [{}] {}",
+            err_mes,
+            resp.status(),
+            resp.text().await?
+        )))
+    } else {
+        Ok(())
     }
 }

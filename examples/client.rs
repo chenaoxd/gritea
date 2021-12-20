@@ -8,6 +8,8 @@ use std::env;
 
 #[tokio::main]
 async fn main() -> Result<()> {
+    let (owner, repo) = ("chenao", "gritea");
+
     let cli =
         Gritea::builder("git.dreamszl.cc")
             .token(env::var("ACCESS_TOKEN").with_context(|| {
@@ -16,18 +18,18 @@ async fn main() -> Result<()> {
             .build()?;
 
     let user = cli.current_user().await?;
-    println!("{:#?}", user);
+    println!("current_user: {:#?}", user);
 
-    let repo = cli.get_repo("chenao", "gritea").await?;
-    println!("{:#?}", repo);
+    let repo_ = cli.get_repo(owner, repo).await?;
+    println!("repo: {:#?}", repo_);
 
     let _repos = cli.list_repos(&Pagination::default()).await?;
     // println!("{:#?}", _repos);
 
     let hook = cli
         .create_hook(
-            "chenao",
-            "gritea",
+            owner,
+            repo,
             &CreateHookOption {
                 type_: "gitea".to_string(),
                 config: hashmap! {
@@ -41,12 +43,12 @@ async fn main() -> Result<()> {
             },
         )
         .await?;
-    println!("{:#?}", hook);
+    println!("create_hook: {:#?}", hook);
 
-    let hooks = cli
-        .list_hooks("chenao", "gritea", &Pagination::default())
-        .await?;
-    println!("{:#?}", hooks);
+    let hooks = cli.list_hooks(owner, repo, &Pagination::default()).await?;
+    println!("hooks: {:#?}", hooks);
+
+    cli.delete_hook(owner, repo, hook.id).await?;
 
     let opt = CreateStatusOption {
         state: gritea::repo::CommitStatusState::Success,
@@ -56,13 +58,13 @@ async fn main() -> Result<()> {
     };
     let status = cli
         .create_status(
-            "chenao",
-            "gritea",
+            owner,
+            repo,
             "c0a03f7fd44f9fe42a108a24e30984779e6c85b4",
             &opt,
         )
         .await?;
-    println!("{:#?}", status);
+    println!("create_status: {:#?}", status);
 
     Ok(())
 }
