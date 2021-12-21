@@ -1,3 +1,7 @@
+pub mod dto;
+
+pub use dto::*;
+
 use url::Url;
 
 use crate::Result;
