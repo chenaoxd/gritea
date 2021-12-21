@@ -57,7 +57,7 @@ impl GriteaBuilder {
     }
 
     pub fn build(&self) -> Result<Gritea> {
-        let base_url = Url::parse(&format!("{}://{}/api/v1/", self.scheme, self.host))?;
+        let base_url = Url::parse(&format!("{}://{}/", self.scheme, self.host))?;
 
         let cli = match &self.cli {
             Some(inner) => inner.clone(),
