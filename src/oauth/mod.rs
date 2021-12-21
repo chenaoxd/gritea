@@ -2,9 +2,11 @@ pub mod dto;
 
 pub use dto::*;
 
+use http::Method;
+use reqwest::Client;
 use url::Url;
 
-use crate::Result;
+use crate::{client::resp_json, Result};
 
 pub fn oauth2_url(
     base_url: &str,
@@ -21,4 +23,20 @@ pub fn oauth2_url(
         .append_pair("state", state);
 
     Ok(url)
+}
+
+pub async fn access_token(
+    base_url: &str,
+    ac_form: AccessTokenForm,
+    http_cli: Client,
+) -> Result<AccessTokenResponse> {
+    let url = Url::parse(base_url)?.join("login/oauth/access_token")?;
+
+    let resp = http_cli
+        .request(Method::POST, url)
+        .json(&ac_form)
+        .send()
+        .await?;
+
+    resp_json(resp, "get access_token failed").await
 }

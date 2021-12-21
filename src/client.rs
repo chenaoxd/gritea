@@ -9,7 +9,6 @@ use crate::{
     config::Config,
     error::{Error, Result},
     hook::{CreateHookOption, Hook},
-    oauth::{AccessTokenForm, AccessTokenResponse},
     pagination::Pagination,
     repo::{CommitStatus, CreateStatusOption, Repository},
     user::User,
@@ -166,28 +165,6 @@ impl Gritea {
             &format!("list hooks of repo {}/{} failed", owner, repo),
         )
         .await
-    }
-
-    // ===============================================
-    // OAuth related apis
-    // ===============================================
-
-    pub async fn access_token(
-        &self,
-        ac_form: AccessTokenForm,
-    ) -> Result<AccessTokenResponse> {
-        let url = self.abs_url("login/oauth/access_token")?;
-        let auth_header = self.headers()?;
-
-        let resp = self
-            .cli
-            .request(Method::POST, url)
-            .header(auth_header.0, auth_header.1)
-            .json(&ac_form)
-            .send()
-            .await?;
-
-        resp_json(resp, "get access_token failed").await
     }
 }
 
