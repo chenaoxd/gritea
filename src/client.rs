@@ -36,8 +36,12 @@ impl Gritea {
         Ok(self.conf.read()?.clone())
     }
 
+    pub fn abs_url(&self, rel_url: &str) -> Result<Url> {
+        Ok(self.r_conf()?.base_url.join(rel_url)?)
+    }
+
     pub fn api_url(&self, rel_url: &str) -> Result<Url> {
-        Ok(self.r_conf()?.base_url.join("api/v1/")?.join(rel_url)?)
+        Ok(self.abs_url("api/v1/")?.join(rel_url)?)
     }
 
     pub fn headers(&self) -> Result<(String, String)> {
