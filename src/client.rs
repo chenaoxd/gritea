@@ -74,7 +74,7 @@ impl Gritea {
     }
 
     /// List all the repos which the user has permission to
-    pub async fn list_repos(&self, page: &Pagination) -> Result<Vec<Repository>> {
+    pub async fn list_repos(&self, page: Pagination) -> Result<Vec<Repository>> {
         let resp = self
             .request(Method::GET, "user/repos")?
             .query(&page.to_query())
@@ -152,7 +152,7 @@ impl Gritea {
         &self,
         owner: &str,
         repo: &str,
-        page: &Pagination,
+        page: Pagination,
     ) -> Result<Vec<Hook>> {
         let resp = self
             .request(Method::GET, &format!("repos/{}/{}/hooks", owner, repo))?
