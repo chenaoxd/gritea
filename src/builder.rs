@@ -2,10 +2,7 @@ use reqwest::Client;
 use url::Url;
 
 use crate::{
-    auth::{Auth, OAuth2Token},
-    client::Gritea,
-    config::Config,
-    error::Result,
+    auth::Auth, client::Gritea, config::Config, error::Result, oauth::AccessToken,
 };
 
 pub struct GriteaBuilder {
@@ -45,7 +42,7 @@ impl GriteaBuilder {
     }
 
     /// Switch to using an OAuth2 token instead of a personal access token
-    pub fn oauth2_token(&mut self, oauth_token: &OAuth2Token) -> &mut Self {
+    pub fn oauth2_token(&mut self, oauth_token: &AccessToken) -> &mut Self {
         self.token = Auth::OAuth2(oauth_token.clone());
         self
     }

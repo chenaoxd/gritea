@@ -29,7 +29,7 @@ pub async fn access_token(
     base_url: &str,
     ac_form: AccessTokenForm,
     http_cli: Client,
-) -> Result<AccessTokenResponse> {
+) -> Result<AccessToken> {
     let url = Url::parse(base_url)?.join("login/oauth/access_token")?;
 
     let resp = http_cli
