@@ -3,6 +3,15 @@
 `Gritea` is a async gitea API sdk.
 
 
+[![Crates.io][crates-badge]][crates-url]
+[![MIT licensed][mit-badge]][mit-url]
+
+[crates-badge]: https://img.shields.io/crates/v/gritea.svg
+[crates-url]: https://crates.io/crates/gritea
+[mit-badge]: https://img.shields.io/badge/license-MIT-blue.svg
+[mit-url]: https://github.com/chenaoxd/gritea/blob/master/LICENSE
+
+
 ## Usage example
 
 ```rust
