@@ -23,7 +23,7 @@ async fn main() -> Result<()> {
     let repo_ = cli.get_repo(owner, repo).await?;
     println!("repo: {:#?}", repo_);
 
-    let _repos = cli.list_repos(&Pagination::default()).await?;
+    let _repos = cli.list_repos(Pagination::default()).await?;
     // println!("{:#?}", _repos);
 
     let hook = cli
@@ -45,7 +45,7 @@ async fn main() -> Result<()> {
         .await?;
     println!("create_hook: {:#?}", hook);
 
-    let hooks = cli.list_hooks(owner, repo, &Pagination::default()).await?;
+    let hooks = cli.list_hooks(owner, repo, Pagination::default()).await?;
     println!("hooks: {:#?}", hooks);
 
     cli.delete_hook(owner, repo, hook.id).await?;
