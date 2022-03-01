@@ -12,7 +12,7 @@ pub struct User {
     pub followers_count: i64,
     pub following_count: i64,
     pub full_name: String,
-    pub id: i32,
+    pub id: i64,
     pub is_admin: bool,
     pub language: String,
     pub last_login: DateTime<Utc>,

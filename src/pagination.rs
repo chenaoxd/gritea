@@ -2,12 +2,12 @@ use serde::{Deserialize, Serialize};
 
 #[derive(Debug, Deserialize, Serialize)]
 pub struct Pagination {
-    page: i32,
-    limit: i32,
+    page: i64,
+    limit: i64,
 }
 
 impl Pagination {
-    pub fn new(page: i32, limit: i32) -> Self {
+    pub fn new(page: i64, limit: i64) -> Self {
         Self { page, limit }
     }
 
