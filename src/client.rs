@@ -73,6 +73,10 @@ impl Gritea {
         resp_json(resp, "get user failed").await
     }
 
+    // ===============================================
+    // Repository related apis
+    // ===============================================
+
     /// List all the repos which the user has permission to
     pub async fn list_repos(&self, page: Pagination) -> Result<Vec<Repository>> {
         let resp = self
@@ -84,10 +88,6 @@ impl Gritea {
         resp_json(resp, "list repos failed").await
     }
 
-    // ===============================================
-    // Repository related apis
-    // ===============================================
-
     /// Get the specified repo
     pub async fn get_repo(&self, owner: &str, repo: &str) -> Result<Repository> {
         let resp = self
@@ -98,7 +98,7 @@ impl Gritea {
         resp_json(resp, "get repo failed").await
     }
 
-    pub async fn search_repo(&self, query: &str) -> Result<Vec<Repository>> {
+    pub async fn search_repos(&self, query: &str) -> Result<Vec<Repository>> {
         let resp = self
             .request(Method::GET, "repos/search")?
             .query(&[("q", query)])
