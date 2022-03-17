@@ -10,7 +10,7 @@ use crate::{
     error::{Error, Result},
     hook::{CreateHookOption, Hook},
     pagination::Pagination,
-    repo::{CommitStatus, CreateStatusOption, Repository},
+    repo::{CommitStatus, CreateStatusOption, Repository, SearchResult},
     user::User,
 };
 
@@ -96,6 +96,27 @@ impl Gritea {
             .await?;
 
         resp_json(resp, "get repo failed").await
+    }
+
+    pub async fn search_repo(&self, query: &str) -> Result<Vec<Repository>> {
+        let resp = self
+            .request(Method::GET, "repos/search")?
+            .query(&[("q", query)])
+            .send()
+            .await?;
+        let search_res: Result<SearchResult> =
+            resp_json(resp, "search repo failed").await;
+
+        match search_res {
+            Err(err) => Err(err),
+            Ok(res) => {
+                if res.ok {
+                    Ok(res.data)
+                } else {
+                    Err(Error::GiteaError(serde_json::to_string(&res)?))
+                }
+            }
+        }
     }
 
     /// Create a commit status

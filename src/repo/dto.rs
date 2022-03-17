@@ -97,6 +97,12 @@ pub struct CreateStatusOption {
     pub context: String,
 }
 
+#[derive(Debug, Deserialize, Serialize)]
+pub struct SearchResult {
+    pub data: Vec<Repository>,
+    pub ok: bool,
+}
+
 #[cfg(test)]
 mod tests {
     use super::*;

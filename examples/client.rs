@@ -11,7 +11,7 @@ async fn main() -> Result<()> {
     let (owner, repo) = ("chenao", "gritea");
 
     let cli =
-        Gritea::builder("git.dreamszl.cc")
+        Gritea::builder("git.chenaoxd.com")
             .token(env::var("ACCESS_TOKEN").with_context(|| {
                 format!("get environment variable ACCESS_TOKEN failed")
             })?)
@@ -25,6 +25,9 @@ async fn main() -> Result<()> {
 
     let _repos = cli.list_repos(Pagination::default()).await?;
     // println!("{:#?}", _repos);
+
+    let repos = cli.search_repo("jarvis").await?;
+    println!("{:#?}", repos);
 
     let hook = cli
         .create_hook(
