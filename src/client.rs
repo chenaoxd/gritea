@@ -98,10 +98,17 @@ impl Gritea {
         resp_json(resp, "get repo failed").await
     }
 
-    pub async fn search_repos(&self, query: &str) -> Result<Vec<Repository>> {
+    pub async fn search_repos(
+        &self,
+        query: &str,
+        page: Pagination,
+    ) -> Result<Vec<Repository>> {
+        let mut search_q = page.to_query().to_vec();
+        search_q.push(("q".to_string(), query.to_string()));
+
         let resp = self
             .request(Method::GET, "repos/search")?
-            .query(&[("q", query)])
+            .query(&search_q)
             .send()
             .await?;
         let search_res: Result<SearchResult> =

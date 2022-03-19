@@ -26,7 +26,7 @@ async fn main() -> Result<()> {
     let _repos = cli.list_repos(Pagination::default()).await?;
     // println!("{:#?}", _repos);
 
-    let repos = cli.search_repos("jarvis").await?;
+    let repos = cli.search_repos("jarvis", Pagination::default()).await?;
     println!("{:#?}", repos);
 
     let hook = cli

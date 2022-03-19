@@ -11,10 +11,10 @@ impl Pagination {
         Self { page, limit }
     }
 
-    pub fn to_query(&self) -> [(&'static str, String); 2] {
+    pub fn to_query(&self) -> [(String, String); 2] {
         [
-            ("page", self.page.to_string()),
-            ("limit", self.limit.to_string()),
+            ("page".to_string(), self.page.to_string()),
+            ("limit".to_string(), self.limit.to_string()),
         ]
     }
 }
